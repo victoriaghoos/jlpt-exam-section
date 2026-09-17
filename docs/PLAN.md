@@ -161,7 +161,7 @@ Not an afterthought, because it isn't one in the reference. `role="timer"` on th
 
 ## 7. Build order
 
-1. Model and seed data: a subset per もんだい rather than all 21, enough that the answer sheet is meaningful
+1. Model and seed data: all 21 questions. The answer sheet is one of the four UI elements and looks sparse with a subset
 2. Reducer and its tests, with no UI at all
 3. Stem renderer driven by the segment model
 4. Answer sheet, grouped by problem, clickable
