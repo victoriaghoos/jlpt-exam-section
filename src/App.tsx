@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer, useRef } from 'react';
 import './App.css';
 import { AnswerSheet } from './components/AnswerSheet';
 import { QuestionCard } from './components/QuestionCard';
@@ -17,6 +17,11 @@ export default function App() {
   });
 
   const { question, problem } = entries[state.currentQuestionIndex];
+
+  // Read inside the keydown listener without making it a dependency, so the
+  // listener is bound once instead of rebinding on every question change.
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   // Ticks once per second; stops once submitted so it doesn't keep
   // dispatching after the exam is locked.
@@ -41,8 +46,9 @@ export default function App() {
 
       if (event.key >= '1' && event.key <= '4') {
         // ChoiceList disables its buttons once submitted; keep the keyboard in sync
-        if (state.isSubmitted) return;
-        const choice = question.choices[Number(event.key) - 1];
+        if (stateRef.current.isSubmitted) return;
+        const currentQuestion = entries[stateRef.current.currentQuestionIndex].question;
+        const choice = currentQuestion.choices[Number(event.key) - 1];
         if (choice) dispatch({ type: 'ANSWER', choiceId: choice.id });
       } else if (event.key === 'ArrowRight' || event.key === 'Enter') {
         dispatch({ type: 'NEXT' });
@@ -53,7 +59,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [question, state.isSubmitted]);
+  }, [entries]);
 
   return (
     <div>
