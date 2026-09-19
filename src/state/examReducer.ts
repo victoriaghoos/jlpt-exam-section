@@ -1,4 +1,4 @@
-import type { Exam, Question } from '../types';
+import type { Exam, Problem, Question } from '../types';
 
 export interface ExamState {
   currentQuestionIndex: number; // position in the flat question list, not a question id
@@ -11,14 +11,22 @@ export interface ExamState {
   isSubmitted: boolean; // whether the exam has been handed in
 }
 
+export interface QuestionEntry {
+  question: Question;
+  problem: Problem; // instruction, label and choice layout live on the problem, not the question
+}
+
 // Derived, not stored in state:
 // The Exam is static input (props), not mutable session state, so storing a flattened copy would just be a duplicate that never changes. Deriving it is cheap (one flatMap) and keeps ExamState free of anything that isn't truly "what changes as the user interacts."
-// Used by the UI to build `totalQuestions` and to look up `questions[currentQuestionIndex]` when rendering -- the reducer itself never calls this.
-export function getAllQuestions(exam: Exam): Question[] {
+// Used by the UI to build `totalQuestions` and to look up `entries[currentQuestionIndex]` when rendering -- the reducer itself never calls this.
+export function getQuestionEntries(exam: Exam): QuestionEntry[] {
   // sections -> problems -> questions is a 3-level tree; flatMap twice turns
-  // it into one flat, ordered array of Question.
+  // it into one flat, ordered array, pairing each question with its problem
+  // so a renderer never has to search the tree back up for it.
   return exam.sections.flatMap((section) =>
-    section.problems.flatMap((problem) => problem.questions),
+    section.problems.flatMap((problem) =>
+      problem.questions.map((question) => ({ question, problem })),
+    ),
   );
 }
 
