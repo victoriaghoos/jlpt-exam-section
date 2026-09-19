@@ -1,6 +1,8 @@
 import { useMemo, useReducer } from 'react';
 import './App.css';
-import { StemRenderer } from './components/StemRenderer';
+import { AnswerSheet } from './components/AnswerSheet';
+import { QuestionCard } from './components/QuestionCard';
+import { Timer } from './components/Timer';
 import { n5Exam1 } from './data/n5-exam-1';
 import { examReducer, getQuestionEntries } from './state/examReducer';
 
@@ -18,12 +20,23 @@ export default function App() {
 
   return (
     <div>
-      <p>{problem.label}</p>
-      <p>
-        <StemRenderer segments={question.stem} />
-      </p>
-      <button onClick={() => dispatch({ type: 'PREVIOUS' })}>Back</button>
-      <button onClick={() => dispatch({ type: 'NEXT' })}>Next</button>
+      <Timer secondsRemaining={state.secondsRemaining} />
+
+      <QuestionCard
+        problem={problem}
+        question={question}
+        selectedChoiceId={state.answers[state.currentQuestionIndex]}
+        onSelect={(choiceId) => dispatch({ type: 'ANSWER', choiceId })}
+        onNext={() => dispatch({ type: 'NEXT' })}
+        onPrevious={() => dispatch({ type: 'PREVIOUS' })}
+      />
+
+      <AnswerSheet
+        entries={entries}
+        currentQuestionIndex={state.currentQuestionIndex}
+        answers={state.answers}
+        onSelectQuestion={(index) => dispatch({ type: 'GOTO_QUESTION', index })}
+      />
     </div>
   );
 }
