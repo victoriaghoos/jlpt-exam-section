@@ -71,9 +71,10 @@ export function examReducer(state: ExamState, action: ExamAction): ExamState {
     case 'SUBMIT':
       return { ...state, isSubmitted: true };
 
-    // TypeScript checks that every ExamAction['type'] is handled above;
-    // this default only exists as a safety net and should be unreachable.
-    default:
-      return state;
+    // Assigning to `never` forces a compile error if a case above is missing.
+    default: {
+      const exhaustive: never = action;
+      return exhaustive;
+    }
   }
 }
