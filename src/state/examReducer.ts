@@ -1,14 +1,19 @@
 import type { Exam, Question } from '../types';
 
 export interface ExamState {
-  currentQuestionId: number; // which question is currently shown
-  answers: Record<number, string>; // questionId -> chosen choiceId
+  currentQuestionIndex: number; // position in the flat question list, not a question id
+  totalQuestions: number; // bounds for NEXT/PREVIOUS/GOTO_QUESTION, so the reducer never needs the exam itself
+  // Keyed by index, not question id -- unlike choices (see correctChoiceId in
+  // types.ts), the question list itself is never reordered or shuffled within
+  // a session, so position is stable for as long as this state exists.
+  answers: Record<number, string>; // questionIndex -> chosen choiceId
   secondsRemaining: number; // time left on the countdown timer
   isSubmitted: boolean; // whether the exam has been handed in
 }
 
 // Derived, not stored in state:
 // The Exam is static input (props), not mutable session state, so storing a flattened copy would just be a duplicate that never changes. Deriving it is cheap (one flatMap) and keeps ExamState free of anything that isn't truly "what changes as the user interacts."
+// Used by the UI to build `totalQuestions` and to look up `questions[currentQuestionIndex]` when rendering -- the reducer itself never calls this.
 export function getAllQuestions(exam: Exam): Question[] {
   // sections -> problems -> questions is a 3-level tree; flatMap twice turns
   // it into one flat, ordered array of Question.
@@ -21,10 +26,10 @@ export function getAllQuestions(exam: Exam): Question[] {
 // instead of as a function call. The reducer below is the only place
 // that turns one of these into an actual state change.
 export type ExamAction =
-  | { type: 'ANSWER'; choiceId: string } // always answers the current question, so no questionId needed
-  | { type: 'NEXT'; questionIds: number[] } // ordered ids, so the reducer can find "current + 1" without knowing the exam
-  | { type: 'PREVIOUS'; questionIds: number[] }
-  | { type: 'GOTO_QUESTION'; questionId: number; questionIds: number[] } // questionIds validates that the target actually exists
+  | { type: 'ANSWER'; choiceId: string } // always answers the current question, so no index needed
+  | { type: 'NEXT' } // bounded by state.totalQuestions, no payload needed
+  | { type: 'PREVIOUS' }
+  | { type: 'GOTO_QUESTION'; index: number } // validated against state.totalQuestions
   | { type: 'TICK' } // fired once per second by a timer, decrements secondsRemaining
   | { type: 'SUBMIT' };
 
@@ -41,28 +46,26 @@ export function examReducer(state: ExamState, action: ExamAction): ExamState {
       }
       return {
         ...state,
-        answers: { ...state.answers, [state.currentQuestionId]: action.choiceId },
+        answers: { ...state.answers, [state.currentQuestionIndex]: action.choiceId },
       };
 
-    // Move to the next question in the given order, but don't go past the end.
+    // Move to the next question, but don't go past the last one.
     case 'NEXT': {
-      const index = action.questionIds.indexOf(state.currentQuestionId);
-      const isLast = index === -1 || index === action.questionIds.length - 1;
-      return isLast ? state : { ...state, currentQuestionId: action.questionIds[index + 1] };
+      const currentQuestionIndex = Math.min(state.currentQuestionIndex + 1, state.totalQuestions - 1);
+      return { ...state, currentQuestionIndex };
     }
 
     // Same idea, but moving backwards and stopping at the first question.
     case 'PREVIOUS': {
-      const index = action.questionIds.indexOf(state.currentQuestionId);
-      const isFirst = index <= 0;
-      return isFirst ? state : { ...state, currentQuestionId: action.questionIds[index - 1] };
+      const currentQuestionIndex = Math.max(state.currentQuestionIndex - 1, 0);
+      return { ...state, currentQuestionIndex };
     }
 
     // Jump straight to a specific question, e.g. from a "question overview" grid.
-    // Ignored if the id isn't part of this exam, so state never points at a non-existent question.
+    // Ignored if out of range, so state never points at a non-existent question.
     case 'GOTO_QUESTION':
-      return action.questionIds.includes(action.questionId)
-        ? { ...state, currentQuestionId: action.questionId }
+      return action.index >= 0 && action.index < state.totalQuestions
+        ? { ...state, currentQuestionIndex: action.index }
         : state;
 
     // Countdown timer tick. Clamped at 0, and hitting 0 auto-submits the exam.
