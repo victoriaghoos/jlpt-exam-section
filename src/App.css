@@ -75,6 +75,19 @@
   letter-spacing: 0.02em;
 }
 
+.question-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.question-card__section {
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 .question-card__instruction {
   color: var(--text-muted);
   font-size: 14px;
@@ -99,6 +112,12 @@
 .question-card__stem {
   font-size: 20px;
   line-height: 1.6;
+}
+
+.question-card__translation {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 .question-card__stem u {
@@ -248,7 +267,8 @@
 }
 
 .answer-sheet__number {
-  width: 20px;
+  min-width: 24px;
+  flex-shrink: 0;
   background: transparent;
   border: none;
   color: var(--text-muted);

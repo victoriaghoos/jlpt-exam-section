@@ -74,6 +74,7 @@ export default function App() {
 
       <div className="app__main">
         <QuestionCard
+          section={n5Exam1.sections[0]}
           problem={problem}
           question={question}
           selectedChoiceId={state.answers[state.currentQuestionIndex]}
