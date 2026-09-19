@@ -59,6 +59,7 @@ export function AnswerSheet({
           {group.rows.map(({ index, question }) => {
             const selectedChoiceId = answers[index];
             const isCurrent = index === currentQuestionIndex;
+            const choiceNumber = question.choices.findIndex((choice) => choice.id === selectedChoiceId) + 1;
 
             return (
               <button
@@ -68,7 +69,7 @@ export function AnswerSheet({
                   isCurrent ? 'answer-sheet__row answer-sheet__row--current' : 'answer-sheet__row'
                 }
                 aria-current={isCurrent ? 'true' : undefined}
-                aria-label={`Question ${question.id}, ${selectedChoiceId ? 'answered' : 'not answered'}`}
+                aria-label={`Question ${question.id}, ${selectedChoiceId ? `marked ${choiceNumber}` : 'blank'}`}
                 onClick={() => onSelectQuestion(index)}
               >
                 <span className="answer-sheet__number">{question.id}</span>
