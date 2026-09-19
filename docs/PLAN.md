@@ -137,7 +137,7 @@ The union means the compiler catches an unhandled kind when a new section is add
 
 **State: `useReducer`, no store library.** Everything is scoped to one exam session: current index, answers, remaining time, submitted or not. Six actions: answer, step forward/back, jump to a question (answer sheet navigation), tick the clock, submit. Redux or Zustand would be infrastructure without a problem to solve.
 
-**Styling: CSS modules with custom properties.** The reference has a specific dark palette I want as tokens rather than scattered hex values, and it uses plain semantic class names. A utility framework would sit beside that rather than with it.
+**Styling: plain CSS with custom properties.** The reference has a specific dark palette I want as tokens rather than scattered hex values, and it uses plain semantic class names. A utility framework would sit beside that rather than with it.
 
 **Linting: oxlint.** Same Oxc toolchain that now sits under Vite 8, and considerably faster than ESLint on a project this size. I already run it on my own work.
 
@@ -147,7 +147,7 @@ The union means the compiler catches an unhandled kind when a new section is add
 
 ### Considered and rejected
 
-**XState.** An exam is like a state machine: idle → taking → submitted → review, with a timer that forces a transition. For a real product with multiple sections, pausing, and recovery after a refresh I'd take it seriously. For one section, a reducer with four actions is easier to read and easier to test.
+**XState.** An exam is like a state machine: idle → taking → submitted → review, with a timer that forces a transition. For a real product with multiple sections, pausing, and recovery after a refresh I'd take it seriously. For one section, a reducer with six actions is easier to read and easier to test.
 
 **Next.js.** No server, no SSR, no data fetching, no routing depth.
 
