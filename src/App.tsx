@@ -43,7 +43,9 @@ export default function App() {
         entries={entries}
         currentQuestionIndex={state.currentQuestionIndex}
         answers={state.answers}
+        isSubmitted={state.isSubmitted}
         onSelectQuestion={(index) => dispatch({ type: 'GOTO_QUESTION', index })}
+        onSubmit={() => dispatch({ type: 'SUBMIT' })}
       />
     </div>
   );

@@ -4,7 +4,9 @@ interface AnswerSheetProps {
   entries: QuestionEntry[];
   currentQuestionIndex: number;
   answers: Record<number, string>;
+  isSubmitted: boolean;
   onSelectQuestion: (index: number) => void;
+  onSubmit: () => void;
 }
 
 interface ProblemGroup {
@@ -33,7 +35,14 @@ function groupByProblem(entries: QuestionEntry[]): ProblemGroup[] {
   return groups;
 }
 
-export function AnswerSheet({ entries, currentQuestionIndex, answers, onSelectQuestion }: AnswerSheetProps) {
+export function AnswerSheet({
+  entries,
+  currentQuestionIndex,
+  answers,
+  isSubmitted,
+  onSelectQuestion,
+  onSubmit,
+}: AnswerSheetProps) {
   const answeredCount = Object.keys(answers).length;
   const groups = groupByProblem(entries);
 
@@ -80,6 +89,10 @@ export function AnswerSheet({ entries, currentQuestionIndex, answers, onSelectQu
           })}
         </div>
       ))}
+
+      <button type="button" className="answer-sheet__submit" disabled={isSubmitted} onClick={onSubmit}>
+        {isSubmitted ? 'Handed in' : 'Hand it in'}
+      </button>
     </nav>
   );
 }
