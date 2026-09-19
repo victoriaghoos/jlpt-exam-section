@@ -41,6 +41,17 @@ export function ChoiceList({
             >
               <span className="choice__number">{index + 1}</span>
               {choice.text}
+              {/* color alone can't distinguish correct/incorrect, so a mark backs it up */}
+              {isSubmitted && isCorrect && (
+                <span className="choice__mark choice__mark--correct" aria-hidden="true">
+                  ✓
+                </span>
+              )}
+              {isSubmitted && isSelected && !isCorrect && (
+                <span className="choice__mark choice__mark--incorrect" aria-hidden="true">
+                  ✕
+                </span>
+              )}
             </button>
             {/* every choice carries a why, shown for right and wrong alike once submitted */}
             {isSubmitted && <p className="choice__why">{choice.why}</p>}

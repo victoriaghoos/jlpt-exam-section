@@ -164,11 +164,13 @@
 }
 
 .choice--correct {
+  border-width: 2px;
   border-color: var(--correct);
   background: color-mix(in srgb, var(--correct) 15%, transparent);
 }
 
 .choice--incorrect {
+  border-width: 2px;
   border-color: var(--incorrect);
   background: color-mix(in srgb, var(--incorrect) 15%, transparent);
 }
@@ -195,6 +197,19 @@
   padding-top: 6px;
   font-size: 13px;
   color: var(--text-muted);
+}
+
+.choice__mark {
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.choice__mark--correct {
+  color: var(--correct);
+}
+
+.choice__mark--incorrect {
+  color: var(--incorrect);
 }
 
 /* AnswerSheet */
