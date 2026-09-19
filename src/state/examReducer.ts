@@ -1,10 +1,10 @@
 import type { Exam, Question } from '../types';
 
 export interface ExamState {
-  currentQuestionId: number; // Welke vraag sta ik nu op?
+  currentQuestionId: number; // which question is currently shown
   answers: Record<number, string>; // questionId -> chosen choiceId
-  secondsRemaining: number; // Hoeveel tijd is er over?
-  isSubmitted: boolean; // Is het examen ingediend?
+  secondsRemaining: number; // time left on the countdown timer
+  isSubmitted: boolean; // whether the exam has been handed in
 }
 
 // Derived, not stored in state:
