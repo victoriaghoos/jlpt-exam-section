@@ -31,6 +31,13 @@ describe('examReducer', () => {
       const next = examReducer(state, { type: 'ANSWER', choiceId: 'c2' });
       expect(next).toBe(state);
     });
+
+    it('marks a given question directly, without moving off the current one', () => {
+      const state = makeState({ currentQuestionIndex: 0 });
+      const next = examReducer(state, { type: 'ANSWER', choiceId: 'c4', index: 2 });
+      expect(next.answers).toEqual({ 2: 'c4' });
+      expect(next.currentQuestionIndex).toBe(0);
+    });
   });
 
   describe('NEXT', () => {

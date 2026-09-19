@@ -34,7 +34,7 @@ export function getQuestionEntries(exam: Exam): QuestionEntry[] {
 // instead of as a function call. The reducer below is the only place
 // that turns one of these into an actual state change.
 export type ExamAction =
-  | { type: 'ANSWER'; choiceId: string } // always answers the current question, so no index needed
+  | { type: 'ANSWER'; choiceId: string; index?: number } // defaults to the current question; an explicit index marks a different one directly
   | { type: 'NEXT' } // bounded by state.totalQuestions, no payload needed
   | { type: 'PREVIOUS' }
   | { type: 'GOTO_QUESTION'; index: number } // validated against state.totalQuestions
@@ -46,16 +46,18 @@ export type ExamAction =
 // every branch returns a fresh object built with `{ ...state, ... }`.
 export function examReducer(state: ExamState, action: ExamAction): ExamState {
   switch (action.type) {
-    // Record the chosen choice for whatever question we're currently on.
+    // Record the chosen choice for the target question (current, unless one is given).
     // Once submitted, the exam is locked: answers can never change again.
-    case 'ANSWER':
+    case 'ANSWER': {
       if (state.isSubmitted) {
         return state;
       }
+      const index = action.index ?? state.currentQuestionIndex;
       return {
         ...state,
-        answers: { ...state.answers, [state.currentQuestionIndex]: action.choiceId },
+        answers: { ...state.answers, [index]: action.choiceId },
       };
+    }
 
     // Move to the next question, but don't go past the last one.
     case 'NEXT': {
