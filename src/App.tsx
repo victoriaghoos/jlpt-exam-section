@@ -34,6 +34,10 @@ export default function App() {
       if (target instanceof HTMLElement && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
         return;
       }
+      // a focused button already activates on Enter; don't also advance the question
+      if (target instanceof HTMLElement && target.tagName === 'BUTTON' && event.key === 'Enter') {
+        return;
+      }
 
       if (event.key >= '1' && event.key <= '4') {
         const choice = question.choices[Number(event.key) - 1];
