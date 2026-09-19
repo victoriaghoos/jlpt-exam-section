@@ -135,7 +135,7 @@ The union means the compiler catches an unhandled kind when a new section is add
 
 **React 19 + TypeScript + Vite 8.** React because it's my strongest and what the reference runs. TypeScript because the discriminated union is the whole exercise and I want the compiler enforcing exhaustiveness on it. Vite 8 because as of this year it runs Rolldown for both dev and production rather than the old esbuild-for-dev, Rollup-for-build split; one pipeline, so what I see in dev is what ships.
 
-**State: `useReducer`, no store library.** Everything is scoped to one exam session: current index, answers, remaining time, submitted or not. Four actions. Redux or Zustand would be infrastructure without a problem to solve.
+**State: `useReducer`, no store library.** Everything is scoped to one exam session: current index, answers, remaining time, submitted or not. Six actions: answer, step forward/back, jump to a question (answer sheet navigation), tick the clock, submit. Redux or Zustand would be infrastructure without a problem to solve.
 
 **Styling: CSS modules with custom properties.** The reference has a specific dark palette I want as tokens rather than scattered hex values, and it uses plain semantic class names. A utility framework would sit beside that rather than with it.
 
