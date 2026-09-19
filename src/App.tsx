@@ -20,8 +20,12 @@ export default function App() {
 
   // Read inside the keydown listener without making it a dependency, so the
   // listener is bound once instead of rebinding on every question change.
+  // Updated in an effect, not during render, since mutating a ref while
+  // rendering is a side effect React's docs advise against.
   const stateRef = useRef(state);
-  stateRef.current = state;
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   // Ticks once per second; stops once submitted so it doesn't keep
   // dispatching after the exam is locked.
