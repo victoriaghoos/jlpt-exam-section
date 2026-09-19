@@ -62,6 +62,7 @@ export default function App() {
         problem={problem}
         question={question}
         selectedChoiceId={state.answers[state.currentQuestionIndex]}
+        isSubmitted={state.isSubmitted}
         onSelect={(choiceId) => dispatch({ type: 'ANSWER', choiceId })}
         onNext={() => dispatch({ type: 'NEXT' })}
         onPrevious={() => dispatch({ type: 'PREVIOUS' })}

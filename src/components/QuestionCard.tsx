@@ -6,6 +6,7 @@ interface QuestionCardProps {
   problem: Problem;
   question: Question;
   selectedChoiceId?: string;
+  isSubmitted: boolean;
   onSelect: (choiceId: string) => void;
   onNext: () => void;
   onPrevious: () => void;
@@ -15,6 +16,7 @@ export function QuestionCard({
   problem,
   question,
   selectedChoiceId,
+  isSubmitted,
   onSelect,
   onNext,
   onPrevious,
@@ -36,6 +38,8 @@ export function QuestionCard({
         choices={question.choices}
         choiceLayout={problem.choiceLayout}
         selectedChoiceId={selectedChoiceId}
+        correctChoiceId={question.correctChoiceId}
+        isSubmitted={isSubmitted}
         onSelect={onSelect}
       />
 
