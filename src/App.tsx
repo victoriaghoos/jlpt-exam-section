@@ -40,6 +40,8 @@ export default function App() {
       }
 
       if (event.key >= '1' && event.key <= '4') {
+        // ChoiceList disables its buttons once submitted; keep the keyboard in sync
+        if (state.isSubmitted) return;
         const choice = question.choices[Number(event.key) - 1];
         if (choice) dispatch({ type: 'ANSWER', choiceId: choice.id });
       } else if (event.key === 'ArrowRight' || event.key === 'Enter') {
@@ -51,7 +53,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [question]);
+  }, [question, state.isSubmitted]);
 
   return (
     <div>
