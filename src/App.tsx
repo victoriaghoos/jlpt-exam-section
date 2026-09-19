@@ -30,6 +30,11 @@ export default function App() {
     <div>
       <Timer secondsRemaining={state.secondsRemaining} />
 
+      {/* sr-only: announces the current position separately from the visible timer/count regions */}
+      <p className="sr-only" aria-live="polite">
+        Question {state.currentQuestionIndex + 1} of {state.totalQuestions}
+      </p>
+
       <QuestionCard
         problem={problem}
         question={question}
