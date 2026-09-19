@@ -1,8 +1,9 @@
-import type { Problem, Question, Section } from '../types';
+import type { Exam, Problem, Question, Section } from '../types';
 import { ChoiceList } from './ChoiceList';
 import { StemRenderer } from './StemRenderer';
 
 interface QuestionCardProps {
+  exam: Pick<Exam, 'level' | 'number'>;
   section: Pick<Section, 'title' | 'titleEn'>;
   problem: Problem;
   question: Question;
@@ -14,6 +15,7 @@ interface QuestionCardProps {
 }
 
 export function QuestionCard({
+  exam,
   section,
   problem,
   question,
@@ -25,12 +27,16 @@ export function QuestionCard({
 }: QuestionCardProps) {
   return (
     <section className="question-card">
-      <div className="question-card__header">
-        <h2 className="question-card__label">{problem.label}</h2>
-        <p className="question-card__section">
-          <span lang="ja">{section.title}</span> · {section.titleEn}
-        </p>
+      <div className="question-card__meta">
+        <span>
+          {exam.level} Practice Exam {exam.number}
+        </span>
+        <span>
+          <span lang="ja">{section.title}</span> {section.titleEn}
+        </span>
       </div>
+      <h2 className="question-card__label">{problem.label}</h2>
+
       <p className="question-card__instruction" lang="ja">
         {problem.instruction.ja}
       </p>
@@ -54,12 +60,14 @@ export function QuestionCard({
 
       <div className="question-card__nav">
         <button type="button" onClick={onPrevious}>
-          Back
+          ‹ Back
         </button>
         <button type="button" onClick={onNext}>
-          Next
+          Next ›
         </button>
       </div>
+      {/* documents the shortcuts App.tsx's keydown handler implements */}
+      <p className="question-card__hint">1 2 3 4 mark • ← → turn • Enter next</p>
     </section>
   );
 }

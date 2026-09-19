@@ -9,7 +9,8 @@ export function Timer({ secondsRemaining }: TimerProps) {
 
   return (
     <div className="timer" role="timer">
-      {label}
+      <span className="timer__value">{label}</span>
+      <span className="timer__caption">Time left</span>
     </div>
   );
 }

@@ -74,6 +74,7 @@ export default function App() {
 
       <div className="app__main">
         <QuestionCard
+          exam={n5Exam1}
           section={n5Exam1.sections[0]}
           problem={problem}
           question={question}

@@ -50,9 +50,14 @@ export function AnswerSheet({
 
   return (
     <nav className="answer-sheet" aria-label="Answer sheet">
-      <p className="answer-sheet__count" aria-live="polite">
-        {answeredCount} / {entries.length} answered
-      </p>
+      <div className="answer-sheet__header">
+        <p className="answer-sheet__title">
+          <span lang="ja">かいとうようし</span> Answer sheet
+        </p>
+        <p aria-label={`${answeredCount} of ${entries.length} questions answered`} aria-live="polite">
+          {answeredCount} / {entries.length}
+        </p>
+      </div>
 
       {/* multi-column so all もんだい groups fit without scrolling, per PLAN.md's overview requirement */}
       <div className="answer-sheet__groups">

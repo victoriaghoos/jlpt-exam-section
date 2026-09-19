@@ -46,14 +46,29 @@
 /* Timer */
 
 .timer {
-  background: var(--yellow);
-  color: var(--yellow-ink);
+  background: var(--surface);
+  border: 2px solid var(--timer-border);
   border-radius: var(--radius);
-  padding: 14px 20px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.timer__value {
+  color: var(--yellow);
+  font-size: 32px;
+  font-weight: 800;
   letter-spacing: 0.02em;
+}
+
+.timer__caption {
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* QuestionCard */
@@ -75,16 +90,16 @@
   letter-spacing: 0.02em;
 }
 
-.question-card__header {
+.question-card__meta {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-}
-
-.question-card__section {
   color: var(--text-muted);
   font-size: 13px;
+}
+
+.question-card__meta span:last-child {
   white-space: nowrap;
 }
 
@@ -142,6 +157,12 @@
 
 .question-card__nav button:hover {
   border-color: var(--yellow);
+}
+
+.question-card__hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 /* ChoiceList */
@@ -243,9 +264,17 @@
   gap: 16px;
 }
 
-.answer-sheet__count {
+.answer-sheet__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 13px;
   color: var(--text-muted);
+}
+
+.answer-sheet__title span {
+  color: var(--text);
 }
 
 /* 3 columns so all もんだい fit on screen at once, per the reference's overview intent.
