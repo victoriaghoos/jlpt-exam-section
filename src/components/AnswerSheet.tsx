@@ -6,6 +6,7 @@ interface AnswerSheetProps {
   answers: Record<number, string>;
   isSubmitted: boolean;
   onSelectQuestion: (index: number) => void;
+  onMarkAnswer: (index: number, choiceId: string) => void; // marks a choice for a question without it being the current one
   onSubmit: () => void;
 }
 
@@ -41,6 +42,7 @@ export function AnswerSheet({
   answers,
   isSubmitted,
   onSelectQuestion,
+  onMarkAnswer,
   onSubmit,
 }: AnswerSheetProps) {
   const answeredCount = Object.keys(answers).length;
@@ -62,30 +64,42 @@ export function AnswerSheet({
             const choiceNumber = question.choices.findIndex((choice) => choice.id === selectedChoiceId) + 1;
 
             return (
-              <button
+              // A row is a group, not a button: the number navigates, but each
+              // bubble is its own button so an answer can be marked directly
+              // from the sheet, without nesting interactive elements.
+              <div
                 key={question.id}
-                type="button"
                 className={
                   isCurrent ? 'answer-sheet__row answer-sheet__row--current' : 'answer-sheet__row'
                 }
-                aria-current={isCurrent ? 'true' : undefined}
+                role="group"
                 aria-label={`Question ${question.id}, ${selectedChoiceId ? `marked ${choiceNumber}` : 'blank'}`}
-                onClick={() => onSelectQuestion(index)}
               >
-                <span className="answer-sheet__number">{question.id}</span>
+                <button
+                  type="button"
+                  className="answer-sheet__number"
+                  aria-current={isCurrent ? 'true' : undefined}
+                  onClick={() => onSelectQuestion(index)}
+                >
+                  {question.id}
+                </button>
                 {question.choices.map((choice, choiceIndex) => (
-                  <span
+                  <button
                     key={choice.id}
+                    type="button"
                     className={
                       choice.id === selectedChoiceId
                         ? 'answer-sheet__bubble answer-sheet__bubble--selected'
                         : 'answer-sheet__bubble'
                     }
+                    aria-pressed={choice.id === selectedChoiceId}
+                    aria-label={`Mark question ${question.id} as ${choiceIndex + 1}`}
+                    onClick={() => onMarkAnswer(index, choice.id)}
                   >
                     {choiceIndex + 1}
-                  </span>
+                  </button>
                 ))}
-              </button>
+              </div>
             );
           })}
         </div>

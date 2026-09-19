@@ -45,6 +45,12 @@ export default function App() {
         answers={state.answers}
         isSubmitted={state.isSubmitted}
         onSelectQuestion={(index) => dispatch({ type: 'GOTO_QUESTION', index })}
+        onMarkAnswer={(index, choiceId) => {
+          // ANSWER always targets the current question, so jump there first;
+          // useReducer processes both dispatches in order against the updated state.
+          dispatch({ type: 'GOTO_QUESTION', index });
+          dispatch({ type: 'ANSWER', choiceId });
+        }}
         onSubmit={() => dispatch({ type: 'SUBMIT' })}
       />
     </div>
