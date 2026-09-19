@@ -14,3 +14,9 @@ export function getAllQuestions(exam: Exam): Question[] {
     section.problems.flatMap((problem) => problem.questions),
   );
 }
+
+export type ExamAction =
+  | { type: 'ANSWER'; choiceId: string } // always answers the current question, so no questionId needed
+  | { type: 'GOTO_QUESTION'; questionId: number }
+  | { type: 'TICK' }
+  | { type: 'SUBMIT' };
