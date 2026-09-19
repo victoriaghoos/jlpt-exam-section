@@ -62,9 +62,11 @@ export function examReducer(state: ExamState, action: ExamAction): ExamState {
     case 'GOTO_QUESTION':
       return { ...state, currentQuestionId: action.questionId };
 
-    // Countdown timer tick. Clamped at 0 so it never goes negative.
-    case 'TICK':
-      return { ...state, secondsRemaining: Math.max(0, state.secondsRemaining - 1) };
+    // Countdown timer tick. Clamped at 0, and hitting 0 auto-submits the exam.
+    case 'TICK': {
+      const secondsRemaining = Math.max(0, state.secondsRemaining - 1);
+      return { ...state, secondsRemaining, isSubmitted: state.isSubmitted || secondsRemaining === 0 };
+    }
 
     case 'SUBMIT':
       return { ...state, isSubmitted: true };
