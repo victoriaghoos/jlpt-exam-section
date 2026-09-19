@@ -24,7 +24,7 @@ export type ExamAction =
   | { type: 'ANSWER'; choiceId: string } // always answers the current question, so no questionId needed
   | { type: 'NEXT'; questionIds: number[] } // ordered ids, so the reducer can find "current + 1" without knowing the exam
   | { type: 'PREVIOUS'; questionIds: number[] }
-  | { type: 'GOTO_QUESTION'; questionId: number }
+  | { type: 'GOTO_QUESTION'; questionId: number; questionIds: number[] } // questionIds validates that the target actually exists
   | { type: 'TICK' } // fired once per second by a timer, decrements secondsRemaining
   | { type: 'SUBMIT' };
 
@@ -59,8 +59,11 @@ export function examReducer(state: ExamState, action: ExamAction): ExamState {
     }
 
     // Jump straight to a specific question, e.g. from a "question overview" grid.
+    // Ignored if the id isn't part of this exam, so state never points at a non-existent question.
     case 'GOTO_QUESTION':
-      return { ...state, currentQuestionId: action.questionId };
+      return action.questionIds.includes(action.questionId)
+        ? { ...state, currentQuestionId: action.questionId }
+        : state;
 
     // Countdown timer tick. Clamped at 0, and hitting 0 auto-submits the exam.
     case 'TICK': {
