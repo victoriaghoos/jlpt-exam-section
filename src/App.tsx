@@ -1,4 +1,4 @@
-import { useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import './App.css';
 import { AnswerSheet } from './components/AnswerSheet';
 import { QuestionCard } from './components/QuestionCard';
@@ -17,6 +17,14 @@ export default function App() {
   });
 
   const { question, problem } = entries[state.currentQuestionIndex];
+
+  // Ticks once per second; stops once submitted so it doesn't keep
+  // dispatching after the exam is locked.
+  useEffect(() => {
+    if (state.isSubmitted) return;
+    const id = setInterval(() => dispatch({ type: 'TICK' }), 1000);
+    return () => clearInterval(id);
+  }, [state.isSubmitted]);
 
   return (
     <div>
