@@ -66,33 +66,37 @@ export default function App() {
   }, [entries]);
 
   return (
-    <div>
-      <Timer secondsRemaining={state.secondsRemaining} />
-
+    <div className="app">
       {/* sr-only: announces the current position separately from the visible timer/count regions */}
       <p className="sr-only" aria-live="polite">
         Question {state.currentQuestionIndex + 1} of {state.totalQuestions}
       </p>
 
-      <QuestionCard
-        problem={problem}
-        question={question}
-        selectedChoiceId={state.answers[state.currentQuestionIndex]}
-        isSubmitted={state.isSubmitted}
-        onSelect={(choiceId) => dispatch({ type: 'ANSWER', choiceId })}
-        onNext={() => dispatch({ type: 'NEXT' })}
-        onPrevious={() => dispatch({ type: 'PREVIOUS' })}
-      />
+      <div className="app__main">
+        <QuestionCard
+          problem={problem}
+          question={question}
+          selectedChoiceId={state.answers[state.currentQuestionIndex]}
+          isSubmitted={state.isSubmitted}
+          onSelect={(choiceId) => dispatch({ type: 'ANSWER', choiceId })}
+          onNext={() => dispatch({ type: 'NEXT' })}
+          onPrevious={() => dispatch({ type: 'PREVIOUS' })}
+        />
+      </div>
 
-      <AnswerSheet
-        entries={entries}
-        currentQuestionIndex={state.currentQuestionIndex}
-        answers={state.answers}
-        isSubmitted={state.isSubmitted}
-        onSelectQuestion={(index) => dispatch({ type: 'GOTO_QUESTION', index })}
-        onMarkAnswer={(index, choiceId) => dispatch({ type: 'ANSWER', choiceId, index })}
-        onSubmit={() => dispatch({ type: 'SUBMIT' })}
-      />
+      <div className="app__sidebar">
+        <Timer secondsRemaining={state.secondsRemaining} />
+
+        <AnswerSheet
+          entries={entries}
+          currentQuestionIndex={state.currentQuestionIndex}
+          answers={state.answers}
+          isSubmitted={state.isSubmitted}
+          onSelectQuestion={(index) => dispatch({ type: 'GOTO_QUESTION', index })}
+          onMarkAnswer={(index, choiceId) => dispatch({ type: 'ANSWER', choiceId, index })}
+          onSubmit={() => dispatch({ type: 'SUBMIT' })}
+        />
+      </div>
     </div>
   );
 }
