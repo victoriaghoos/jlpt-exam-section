@@ -34,7 +34,11 @@ export type ExamAction =
 export function examReducer(state: ExamState, action: ExamAction): ExamState {
   switch (action.type) {
     // Record the chosen choice for whatever question we're currently on.
+    // Once submitted, the exam is locked: answers can never change again.
     case 'ANSWER':
+      if (state.isSubmitted) {
+        return state;
+      }
       return {
         ...state,
         answers: { ...state.answers, [state.currentQuestionId]: action.choiceId },
