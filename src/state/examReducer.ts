@@ -48,11 +48,15 @@ export function examReducer(state: ExamState, action: ExamAction): ExamState {
   switch (action.type) {
     // Record the chosen choice for the target question (current, unless one is given).
     // Once submitted, the exam is locked: answers can never change again.
+    // Ignored if the given index is out of range, same bounds check as GOTO_QUESTION.
     case 'ANSWER': {
       if (state.isSubmitted) {
         return state;
       }
       const index = action.index ?? state.currentQuestionIndex;
+      if (index < 0 || index >= state.totalQuestions) {
+        return state;
+      }
       return {
         ...state,
         answers: { ...state.answers, [index]: action.choiceId },

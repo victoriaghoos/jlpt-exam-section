@@ -38,6 +38,12 @@ describe('examReducer', () => {
       expect(next.answers).toEqual({ 2: 'c4' });
       expect(next.currentQuestionIndex).toBe(0);
     });
+
+    it('ignores an out-of-range explicit index', () => {
+      const state = makeState({ totalQuestions: 3 });
+      const next = examReducer(state, { type: 'ANSWER', choiceId: 'c1', index: 99 });
+      expect(next).toBe(state);
+    });
   });
 
   describe('NEXT', () => {
