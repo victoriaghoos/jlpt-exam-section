@@ -26,6 +26,29 @@ export default function App() {
     return () => clearInterval(id);
   }, [state.isSubmitted]);
 
+  // Keyboard shortcuts: 1-4 marks a choice, arrows turn the page, Enter advances.
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      const target = event.target;
+      // don't hijack keys while the user is typing somewhere else
+      if (target instanceof HTMLElement && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      if (event.key >= '1' && event.key <= '4') {
+        const choice = question.choices[Number(event.key) - 1];
+        if (choice) dispatch({ type: 'ANSWER', choiceId: choice.id });
+      } else if (event.key === 'ArrowRight' || event.key === 'Enter') {
+        dispatch({ type: 'NEXT' });
+      } else if (event.key === 'ArrowLeft') {
+        dispatch({ type: 'PREVIOUS' });
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [question]);
+
   return (
     <div>
       <Timer secondsRemaining={state.secondsRemaining} />
