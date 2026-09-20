@@ -21,7 +21,6 @@ npm run build    # typecheck (tsc -b) and build for production
 ```
 src/
   types.ts               exam/section/problem/question/choice data model
-  questions.ts           getQuestionEntries: exam -> flat [{ question, problem }]
   data/
     n5-exam-1.ts         the N5 exam content, typed against types.ts
     n5-exam-1.test.ts    data integrity: correctChoiceId must point at a real choice
