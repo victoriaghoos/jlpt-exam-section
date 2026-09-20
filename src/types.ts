@@ -1,5 +1,3 @@
-// a stem is the sentence a question asks about, represented as segments rather than HTML. This allows the renderer to control how targets and blanks are displayed without using dangerouslySetInnerHTML.
-
 export type StemSegment =
   | { kind: 'text'; value: string }
   | { kind: 'target'; value: string }
