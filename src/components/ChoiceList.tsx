@@ -2,7 +2,7 @@ import type { Choice } from '../types';
 
 interface ChoiceListProps {
   choices: Choice[];
-  choiceLayout: 'grid' | 'stack'; // short choices sit in a grid; full sentences stack
+  choiceLayout: 'grid' | 'stack'; 
   selectedChoiceId?: string;
   correctChoiceId: string;
   isSubmitted: boolean;
@@ -41,7 +41,6 @@ export function ChoiceList({
             >
               <span className="choice__number">{index + 1}</span>
               {choice.text}
-              {/* color alone can't distinguish correct/incorrect, so a mark backs it up */}
               {isSubmitted && isCorrect && (
                 <span className="choice__mark choice__mark--correct" aria-hidden="true">
                   ✓
@@ -53,7 +52,6 @@ export function ChoiceList({
                 </span>
               )}
             </button>
-            {/* every choice carries a why, shown for right and wrong alike once submitted */}
             {isSubmitted && <p className="choice__why">{choice.why}</p>}
           </div>
         );

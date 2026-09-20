@@ -6,7 +6,7 @@ interface AnswerSheetProps {
   answers: Record<number, string>;
   isSubmitted: boolean;
   onSelectQuestion: (index: number) => void;
-  onMarkAnswer: (index: number, choiceId: string) => void; // marks a choice for a question without it being the current one
+  onMarkAnswer: (index: number, choiceId: string) => void; 
   onSubmit: () => void;
 }
 
@@ -16,9 +16,6 @@ interface ProblemGroup {
   rows: { index: number; question: QuestionEntry['question'] }[];
 }
 
-// Entries come out of getQuestionEntries grouped by problem already (the
-// source tree is problems -> questions), so a consecutive-run grouping is
-// enough -- no need to sort or key by id.
 function groupByProblem(entries: QuestionEntry[]): ProblemGroup[] {
   const groups: ProblemGroup[] = [];
   entries.forEach((entry, index) => {
@@ -59,7 +56,6 @@ export function AnswerSheet({
         </p>
       </div>
 
-      {/* multi-column so all もんだい groups fit without scrolling, per PLAN.md's overview requirement */}
       <div className="answer-sheet__groups">
         {groups.map((group) => (
           <div key={group.problemId} className="answer-sheet__group">
@@ -71,9 +67,6 @@ export function AnswerSheet({
               const choiceNumber = question.choices.findIndex((choice) => choice.id === selectedChoiceId) + 1;
 
               return (
-                // A row is a group, not a button: the number navigates, but each
-                // bubble is its own button so an answer can be marked directly
-                // from the sheet, without nesting interactive elements.
                 <div
                   key={question.id}
                   className={

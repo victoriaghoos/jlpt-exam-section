@@ -46,7 +46,6 @@ export function QuestionCard({
       <p className="question-card__stem">
         <StemRenderer segments={question.stem} />
       </p>
-      {/* the translation is only a spoiler once the answer is already revealed */}
       {isSubmitted && <p className="question-card__translation">{question.translation}</p>}
 
       <ChoiceList
@@ -66,7 +65,6 @@ export function QuestionCard({
           Next ›
         </button>
       </div>
-      {/* documents the shortcuts App.tsx's keydown handler implements */}
       <p className="question-card__hint">1 2 3 4 mark • ← → turn • Enter next</p>
     </section>
   );

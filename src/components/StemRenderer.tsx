@@ -4,7 +4,6 @@ interface StemRendererProps {
   segments: StemSegment[];
 }
 
-// Renders a question stem from segments instead of an HTML string
 export function StemRenderer({ segments }: StemRendererProps) {
   return (
     <>
