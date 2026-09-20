@@ -8,8 +8,7 @@ export const n5Exam1: Exam = {
   sections: [
     {
       id: 'vocab',
-      title: 'もじ・ごい',
-      titleEn: 'Vocabulary',
+      title: { ja: 'もじ・ごい', en: 'Vocabulary' },
       minutes: 20,
       problems: [
         // もんだい 1 Kanji reading (7 questions)

@@ -4,7 +4,7 @@ import { StemRenderer } from './StemRenderer';
 
 interface QuestionCardProps {
   exam: Pick<Exam, 'level' | 'number'>;
-  section: Pick<Section, 'title' | 'titleEn'>;
+  section: Pick<Section, 'title'>;
   problem: Problem;
   question: Question;
   selectedChoiceId?: string;
@@ -32,7 +32,7 @@ export function QuestionCard({
           {exam.level} Practice Exam {exam.number}
         </span>
         <span>
-          <span lang="ja">{section.title}</span> {section.titleEn}
+          <span lang="ja">{section.title.ja}</span> {section.title.en}
         </span>
       </div>
       <h2 className="question-card__label">{problem.label}</h2>

@@ -37,8 +37,7 @@ export interface Problem {
 
 export interface Section {
   id: string;
-  title: string; // e.g., 'もじ・ごい'
-  titleEn: string; // e.g., 'Vocabulary'
+  title: { ja: string; en: string }; // e.g., { ja: 'もじ・ごい', en: 'Vocabulary' }
   minutes: number;
   problems: Problem[];
 }
