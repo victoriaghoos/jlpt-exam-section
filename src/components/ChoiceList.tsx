@@ -2,11 +2,18 @@ import type { Choice } from '../types';
 
 interface ChoiceListProps {
   choices: Choice[];
-  choiceLayout: 'grid' | 'stack'; 
+  choiceLayout: 'grid' | 'stack';
   selectedChoiceId?: string;
   correctChoiceId: string;
   isSubmitted: boolean;
   onSelect: (choiceId: string) => void;
+}
+
+function resultLabel(isCorrect: boolean, isSelected: boolean): string | null {
+  if (isCorrect && isSelected) return 'Your answer, correct';
+  if (isCorrect) return 'Correct answer';
+  if (isSelected) return 'Your answer, incorrect';
+  return null;
 }
 
 export function ChoiceList({
@@ -22,6 +29,7 @@ export function ChoiceList({
       {choices.map((choice, index) => {
         const isCorrect = choice.id === correctChoiceId;
         const isSelected = choice.id === selectedChoiceId;
+        const label = isSubmitted ? resultLabel(isCorrect, isSelected) : null;
 
         return (
           <div key={choice.id} className="choice-wrapper">
@@ -41,6 +49,9 @@ export function ChoiceList({
             >
               <span className="choice__number">{index + 1}</span>
               {choice.text}
+
+              {label && <span className="sr-only">, {label}</span>}
+
               {isSubmitted && isCorrect && (
                 <span className="choice__mark choice__mark--correct" aria-hidden="true">
                   ✓
@@ -59,4 +70,3 @@ export function ChoiceList({
     </div>
   );
 }
-
